@@ -17,4 +17,8 @@ Route::get('/spasibo', SpasiboJournalList::class)
 //    ->middleware(['auth'])
     ->name('spasibo-list');
 
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/spasibo/public/livewire/update', $handle);
+});
+
 require __DIR__.'/auth.php';

@@ -1,13 +1,17 @@
 <div>
     {{-- If you look to others for fulfillment, you will never truly be fulfilled. --}}
-    <div class="flex justify-between">
-        <div class="col-1 w-1/5 text-left border">
+    <div class="grid grid-cols-5 gap-2">
+        <div class="text-left border">
             left
         </div>
-        <div class="col-10 w-1/2 text-center border">
-            center
+        <div class="col-span-3 text-center border">
+            @if(Route::current()->uri() === 'spasibo')
+            <livewire:spasibo-list />
+            @else
+            <livewire:spasibo-form />
+            @endif
         </div>
-        <div class="col-1 w-1/5 text-right border">
+        <div class="text-right border">
             right
         </div>
     </div>

@@ -1,25 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ env('APP_NAME') }}</title>
-    @livewireStyles
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">{{ env('APP_NAME') }}</h1>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @if (session()->has('message'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span class="block sm:inline">{{ session('message') }}</span>
-        </div>
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @livewireStyles
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans antialiased">
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <livewire:layout.navigation />
+
+    <!-- Page Heading -->
+    @if (isset($header))
+        <header class="bg-white dark:bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
     @endif
 
-    {{ $slot }}
-</div>
+    <!-- Page Content -->
 
+    <main>
+        <div class="container mx-auto px-4 py-8">
+{{--            <h1 class="text-3xl font-bold mb-6">{{ env('APP_NAME') }}</h1>--}}
+            @if (session()->has('message'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span class="block sm:inline">{{ session('message') }}</span>
+                </div>
+            @endif
+
+            {{ $slot }}
+        </div>
+    </main>
+</div>
 @livewireScripts
 </body>
 </html>
+

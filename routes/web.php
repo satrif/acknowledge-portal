@@ -14,7 +14,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::get('/spasibo', SpasiboJournalList::class)
-//    ->middleware(['auth'])
+    ->middleware(['auth'])
     ->name('spasibo-list');
 
 Livewire::setUpdateRoute(function ($handle) {

@@ -19,6 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'department',
+        'is_manager',
+        'hiring_date',
+        'email_display_name',
         'email',
         'password',
     ];
@@ -41,6 +45,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'hiring_date' => 'date',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];

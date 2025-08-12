@@ -11,6 +11,9 @@ use Livewire\Volt\Component;
 new #[Layout('layouts.guest')] class extends Component
 {
     public string $name = '';
+    public string $department = '';
+    public string $email_display_name = '';
+    public string $hiring_date = '';
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
@@ -20,19 +23,23 @@ new #[Layout('layouts.guest')] class extends Component
      */
     public function register(): void
     {
+        $this->email_display_name = $this->name . ' (' . $this->department . ')';
+        $this->hiring_date = now();
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
+            'department' => ['required', 'string', 'max:255'],
+            'email_display_name' => ['required', 'string', 'max:255'],
+            'hiring_date' => ['required', 'date'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-
         event(new Registered($user = User::create($validated)));
 
-        Auth::login($user);
+        w::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirect(route('spasibo-list', absolute: true), navigate: false);
     }
 }; ?>
 
@@ -43,6 +50,13 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Department -->
+        <div>
+            <x-input-label for="department" :value="__('Department')" />
+            <x-text-input wire:model="department" id="department" class="block mt-1 w-full" type="text" name="department" required autofocus autocomplete="department" />
+            <x-input-error :messages="$errors->get('department')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

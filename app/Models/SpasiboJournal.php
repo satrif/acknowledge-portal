@@ -29,11 +29,16 @@ class SpasiboJournal extends Model
     // Связи (если нужны)
     public function sender()
     {
-        return $this->belongsTo(User::class, 'pid_send');
+        return $this->belongsTo(User::class, 'uid_send');
     }
 
     public function receiver()
     {
-        return $this->belongsTo(User::class, 'pid_to');
+        return $this->belongsTo(User::class, 'uid_to');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(SpasiboLike::class, 'a_id');
     }
 }

@@ -23,9 +23,21 @@ new class extends Component
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
+                    <div class="group relative inline-block">
+                        <span class="select-none text-4xl cursor-pointer">&#129309;</span>
+
+                        <!-- Подсказка (появляется при наведении) -->
+                        <div class="
+                            absolute top-full left-1/2 transform -translate-x-1/2 mt-2
+                            hidden group-hover:block
+                            bg-gray-800 text-white text-sm rounded px-2 py-1
+                            whitespace-nowrap
+                          ">
+                            Acknowledge Portal
+                            <!-- Стрелка (опционально, теперь смотрит вверх) -->
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-0 border-b-4 border-l-transparent border-r-transparent border-b-gray-800"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->

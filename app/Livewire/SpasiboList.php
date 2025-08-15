@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\SpasiboJournal;
 //use App\Models\User;
+use App\Models\SpasiboLike;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,7 +20,8 @@ class SpasiboList extends Component
     {
         //making joins
         $spasibos = SpasiboJournal::query()
-            ->select('spasibo-journal.*');
+            ->select('spasibo-journal.*',
+                DB::raw('(Select string_agg((select name || \'(\' || department || \')\' from "users" where "users".id = "spasibo-likes".uid_send),\';\') FROM "spasibo-likes" where "spasibo-likes".a_id = "spasibo-journal".id) as likers'));
         $spasibos->leftJoin('users as u1', 'spasibo-journal.uid_send', '=', 'u1.id')
             ->selectRaw('coalesce(u1.email_display_name, \'Anonymous\') as name_send');
         $spasibos->join('users as u2', 'spasibo-journal.uid_to', '=', 'u2.id')
@@ -65,7 +67,7 @@ class SpasiboList extends Component
 
         $items = $spasibos
 //            ->get();
-//            ->toSql();
+//            ->toRawSql();
         ->paginate(20);
 //        dd($items);
 
@@ -75,6 +77,29 @@ class SpasiboList extends Component
     }
 
     public function goSearch() {
+        $this->render();
+    }
+
+    public function makeLike($id) {
+        $item = SpasiboJournal::findOrFail($id);
+        $user = auth()->user();
+//        dd($item);
+        // Проверяем, есть ли уже лайк от этого пользователя
+        $existingLike = $item->likes()->where('uid_send', $user->id)->first();
+//        $existingLike = $item->likes()->where('uid_send', $user->id)->toRawSql();
+//        dd($existingLike);
+        if ($existingLike) {
+            // Если лайк есть - удаляем его
+            $existingLike->delete();
+        } else {
+            // Если лайка нет - создаем новый
+            SpasiboLike::create([
+                'uid_send' => $user->id,
+                'a_id' => $id,
+                'date_send' => now()
+            ]);
+//            $item->likes()->save($like);
+        }
         $this->render();
     }
 }

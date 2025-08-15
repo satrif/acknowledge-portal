@@ -14,7 +14,7 @@ class SpasiboLike extends Model
 
     protected $fillable = [
         'a_id',
-        'pid_send',
+        'uid_send',
         'date_send'
     ];
 
@@ -23,13 +23,23 @@ class SpasiboLike extends Model
     ];
 
     // Связи
-    public function assignment()
+//    public function assignment()
+//    {
+//        return $this->belongsTo(SpasiboItem::class, 'a_id');
+//    }
+
+//    public function sender()
+//    {
+//        return $this->belongsTo(User::class, 'uid_send');
+//    }
+
+    public function item()
     {
         return $this->belongsTo(SpasiboItem::class, 'a_id');
     }
 
-    public function sender()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'pid_send');
+        return $this->belongsTo(User::class, 'uid_send');
     }
 }

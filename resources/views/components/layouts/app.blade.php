@@ -30,7 +30,7 @@
     <!-- Page Content -->
 
     <main>
-        <div class="container mx-auto px-4 py-8">
+        <div class="container-fluid mx-auto px-4 py-8">
 {{--            <h1 class="text-3xl font-bold mb-6">{{ env('APP_NAME') }}</h1>--}}
             @if (session()->has('message'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -41,6 +41,9 @@
             {{ $slot }}
         </div>
     </main>
+    <footer>
+        <p class="text-center border-t">{{ env('APP_COMPANY') }} &copy; {{ date('Y') }}</p>
+    </footer>
 </div>
 @livewireScripts
 </body>
